@@ -1,0 +1,17 @@
+{
+  "name": "calculadora-main",
+  "version": "1.0.0",
+  "description": "**[Ver en vivo →](https://gogoroisler.github.io/Calculadora)**",
+  "main": "Calculadora.js",
+  "scripts": {
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "vitest": "^4.1.9"
+  }
+}
