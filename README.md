@@ -45,4 +45,4 @@ Calculadora funcional desarrollada con HTML, CSS y JavaScript vanilla como proye
 
 ## Autor
 
-Santiago Gonzalez Roisler
+Santiago Gonzalez 
