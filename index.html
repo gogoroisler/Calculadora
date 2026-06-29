@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculadora web desarrollada con HTML, CSS y JavaScript vanilla. Proyecto de portfolio orientado a educación y contabilidad.">
+    <meta name="author" content="Santiago González Roisler">
+    <meta property="og:title" content="Calculadora — Portfolio">
+    <meta property="og:description" content="Calculadora web en JavaScript vanilla con soporte de teclado, formato numérico contable y herramientas de IVA e interés compuesto.">
+    <meta property="og:type" content="website">
+    <script>document.documentElement.dataset.theme = localStorage.getItem("tema") || "dark";</script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:wght@400;700&display=swap">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🧮</text></svg>">
+    <title>Mi Calculadora</title>
+</head>
+<body>
+    <div class="container">
+        <div class="app">
+
+            <header class="app-header">
+                <nav class="modo-tabs" role="tablist">
+                    <button class="tab activo" data-modo="calculadora" role="tab">Calculadora</button>
+                    <button class="tab" data-modo="contabilidad" role="tab">Contabilidad</button>
+                    <button class="tab" data-modo="interes" role="tab">Interés</button>
+                </nav>
+                <button id="btn-tema" class="btn-tema" aria-label="Cambiar tema">☀️</button>
+            </header>
+
+            <!-- Panel: Calculadora -->
+            <div class="modo-panel activo" id="panel-calculadora" role="tabpanel">
+                <div class="wrapper">
+                    <div class="calculadora" role="application" aria-label="Calculadora">
+                        <div class="display" role="region" aria-label="Pantalla">
+                            <div id="anterior" aria-label="Operación anterior"></div>
+                            <div id="posterior" aria-live="polite" aria-label="Valor actual"></div>
+                        </div>
+                        <button id="btn-clear" class="col-2" aria-label="Limpiar todo">C</button>
+                        <button id="btn-borrar" aria-label="Borrar último dígito">&larr;</button>
+                        <button class="operator" value="dividir" aria-label="Dividir">÷</button>
+                        <button class="number" aria-label="7">7</button>
+                        <button class="number" aria-label="8">8</button>
+                        <button class="number" aria-label="9">9</button>
+                        <button class="operator" value="multiplicar" aria-label="Multiplicar">×</button>
+                        <button class="number" aria-label="4">4</button>
+                        <button class="number" aria-label="5">5</button>
+                        <button class="number" aria-label="6">6</button>
+                        <button class="operator" value="restar" aria-label="Restar">-</button>
+                        <button class="number" aria-label="1">1</button>
+                        <button class="number" aria-label="2">2</button>
+                        <button class="number" aria-label="3">3</button>
+                        <button class="operator" value="sumar" aria-label="Sumar">+</button>
+                        <button class="col-2 number" aria-label="0">0</button>
+                        <button class="number" aria-label="Punto decimal">.</button>
+                        <button class="operator" value="igual" aria-label="Igual">=</button>
+                    </div>
+                    <div class="historial-panel" role="region" aria-label="Historial de operaciones">
+                        <div class="historial-header">
+                            <h2 class="historial-titulo">Historial</h2>
+                            <div class="historial-acciones">
+                                <button id="btn-csv" aria-label="Descargar historial como CSV">↓ CSV</button>
+                                <button id="btn-limpiar-historial" aria-label="Limpiar historial">✕</button>
+                            </div>
+                        </div>
+                        <div id="historial-lista" class="historial-lista">
+                            <p class="historial-vacio">Las operaciones aparecerán aquí</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel: Contabilidad -->
+            <div class="modo-panel" id="panel-contabilidad" role="tabpanel">
+                <div class="herramientas-grid">
+
+                    <div class="herramienta-card">
+                        <h3 class="herramienta-titulo">Cálculo de IVA</h3>
+                        <div class="campo">
+                            <label for="iva-monto">Monto base ($)</label>
+                            <input type="number" id="iva-monto" class="herramienta-input" placeholder="0.00" min="0">
+                        </div>
+                        <div class="iva-botones">
+                            <button class="btn-iva" data-alicuota="10.5">+ 10,5%</button>
+                            <button class="btn-iva" data-alicuota="21">+ 21%</button>
+                            <button class="btn-iva" data-alicuota="27">+ 27%</button>
+                        </div>
+                        <div id="iva-resultado" class="resultado-box oculto"></div>
+                    </div>
+
+                    <div class="herramienta-card">
+                        <h3 class="herramienta-titulo">Descuento</h3>
+                        <div class="campo">
+                            <label for="desc-precio">Precio original ($)</label>
+                            <input type="number" id="desc-precio" class="herramienta-input" placeholder="0.00" min="0">
+                        </div>
+                        <div class="campo">
+                            <label for="desc-porcentaje">Descuento (%)</label>
+                            <input type="number" id="desc-porcentaje" class="herramienta-input" placeholder="0" min="0" max="100">
+                        </div>
+                        <button id="btn-calcular-desc" class="btn-calcular">Calcular</button>
+                        <div id="desc-resultado" class="resultado-box oculto"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Panel: Interés Compuesto -->
+            <div class="modo-panel" id="panel-interes" role="tabpanel">
+                <div class="herramienta-card herramienta-wide">
+                    <h3 class="herramienta-titulo">Interés Compuesto</h3>
+                    <div class="interes-form">
+                        <div class="campo">
+                            <label for="ic-capital">Capital inicial ($)</label>
+                            <input type="number" id="ic-capital" class="herramienta-input" placeholder="0.00" min="0">
+                        </div>
+                        <div class="campo">
+                            <label for="ic-tasa">Tasa anual (%)</label>
+                            <input type="number" id="ic-tasa" class="herramienta-input" placeholder="0.00" min="0">
+                        </div>
+                        <div class="campo">
+                            <label for="ic-anios">Años</label>
+                            <input type="number" id="ic-anios" class="herramienta-input" placeholder="1" min="1" max="50">
+                        </div>
+                        <div class="campo">
+                            <label for="ic-cap">Capitalización</label>
+                            <select id="ic-cap" class="herramienta-input">
+                                <option value="12">Mensual</option>
+                                <option value="4">Trimestral</option>
+                                <option value="2">Semestral</option>
+                                <option value="1">Anual</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button id="btn-calcular-ic" class="btn-calcular">Calcular</button>
+                    <div id="ic-resultado" class="resultado-box oculto"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <script type="module" src="proceso.js"></script>
+</body>
+</html>
